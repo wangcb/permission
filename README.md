@@ -96,8 +96,13 @@ class User extend Model{
 }
 
 $res = $user->getAllPermissions(); //获取所有权限
+
 $user->can('/auth/add');//判断是否有权限
+
 $res = $user->getMenu(); //获取权限菜单树
+
 $user->getRoles();//获取用户角色
+
 $user->clearRole();//删除用户所有角色
+
 $user->roles([1,2,3]);//给用户分配角色
