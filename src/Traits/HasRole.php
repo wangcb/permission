@@ -54,4 +54,12 @@ trait HasRole
         return $res;
     }
 
+    /**
+     * 获取用户角色
+     */
+    public function hasRole($role){
+        $res = Db::name('model_has_roles')->where('model_id', $this->id)->column('role_id');
+        return in_array($role,$res);
+    }
+
 }
