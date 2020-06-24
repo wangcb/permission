@@ -76,23 +76,24 @@ CREATE TABLE `role_has_permissions` (
 -- ----------------------------
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'web',
-  `create_time` timestamp NULL DEFAULT NULL,
-  `update_time` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'web',
+    `create_time` timestamp NULL DEFAULT NULL,
+    `update_time` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+#安装方法
 
 composer require wangcb/permission
 
-User模型类加
+#User模型类加
 
 class User extend Model{
-  use HasRole;
+    use HasRole;
 }
 
 $res = $user->getAllPermissions(); //获取所有权限

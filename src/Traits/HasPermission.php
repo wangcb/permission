@@ -21,7 +21,7 @@ trait HasPermission
         $permissions = $this->getAllPermissions()->toArray();
         $bool = false;
         if (is_string($permission)){
-            $bool = in_array($permission,array_column($permissions,'name'));
+            $bool = in_array(strtolower($permission),array_column($permissions,'name'));
         }
         return $bool;
     }
@@ -36,7 +36,12 @@ trait HasPermission
     public function getAllPermissions(){
         $roles = Db::name('model_has_roles')->where('model_id', $this->id)->column('role_id');
         $subsql = Db::name('role_has_permissions')->where('role_id','in',$roles)->field('permission_id')->buildSql();
-        $permission = Db::name('permissions')->alias('a')->join([$subsql=> 'b'],'a.id=b.permission_id')->field('a.*')->group('permission_id')->select();
+        $permission = Db::name('permissions')->alias('a')
+            ->join([$subsql=> 'b'],'a.id=b.permission_id')
+            ->field('a.*')
+            ->order('sort','desc')
+            ->group('permission_id')
+            ->select();
         return $permission;
     }
 
@@ -48,9 +53,11 @@ trait HasPermission
             ->join([$subsql=> 'b'],'a.id=b.permission_id')
             ->where('a.type','0')
             ->field('a.*')
+            ->order('sort','desc')
             ->select()
             ->toArray();
         $arr = $this->arr2tree($permission,'id','parent_id');
+        //var_dump($arr);
         return Collection::make($arr);
     }
 

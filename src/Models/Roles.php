@@ -66,4 +66,18 @@ class Roles extends Model
         }
         return $permissions;
     }
+
+    /**
+     * 获取角色所有用户
+     */
+    public function users($id = 0){
+        $sql = Db::name('model_has_roles')->where('role_id',$id ? $id : $this->id)->group('model_id')->buildSql(true);
+        $res = Db::name('user')->alias('u')
+            ->join([$sql=> 'r'], 'r.model_id=u.id')
+            ->field('u.*')
+            ->hidden(['password'])
+            ->order('create_time','desc')
+            ->select();
+        return $res;
+    }
 }
